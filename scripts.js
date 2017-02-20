@@ -13,8 +13,8 @@ function write(x, y, text, color = 'gray') {
 
 	$('canvas').drawText({
 		fillStyle: color,
-		x: x, y: y,
-		fontSize: 16,
+		x: x+1, y: y,
+		fontSize: 13,
 		fontFamily: 'PerfectDOSVGA437Win',
 		align: 'left',
 		text: letter
@@ -22,7 +22,7 @@ function write(x, y, text, color = 'gray') {
 	
 	text = text.substr(1);
 	if (text != '')
-		write(x+8, y, text, color);
+		write(x+6.5, y, text, color);
 }
 
 $('canvas').drawImage({
@@ -52,14 +52,21 @@ $("#settings input, #settings select").on('change', function() {
 		$('select[name=secondTool]', "#settings").hide();
 		use_auxinput = true;
 	}
+	
+	if ($('select[name=sd] option:selected', "#settings").val() == 'custom') {
+		$('input[name=sd]', "#settings").show();
+		$('select[name=sd]', "#settings").hide();
+		use_auxinput = true;
+	}
+
 
 	switch(type) {
 		case 'luma':
-			$topscreen.attr('width', 400);
-			line2 = 'Copyright(C) 2016, AuroraWright';
+			$topscreen.attr('width', 320);
+			line2 = 'Copyright(C) 2017, AuroraWright';
 			break;
 		case 'menuhax':
-			$topscreen.attr('width', 800);
+			$topscreen.attr('width', 640);
 			line2 = 'Copyright(C) 2015, yellow8';
 			break;
 	}
@@ -67,7 +74,7 @@ $("#settings input, #settings select").on('change', function() {
 	$topscreen.clearCanvas().drawRect({
 		fillStyle: 'black',
 		x: 0, y: 0,
-		width: 400,
+		width: 320,
 		height: 240
 	}).drawImage({
 		source: 'images/symbols.png',
@@ -77,7 +84,7 @@ $("#settings input, #settings select").on('change', function() {
 		sx: 0, sy: 16
 	}).drawImage({
 		source: 'images/symbols.png',
-		x: 265, y: 16,
+		x: 186, y: 16,
 		sWidth: 135,
 		sHeight: 84,
 		sx: 265, sy: 16
@@ -153,10 +160,10 @@ $("#settings input, #settings select").on('change', function() {
 	if (aux_bool)
 		write(0, 16*14, aux_text);
 
-	if ($topscreen.width() == 800) {
+	if ($topscreen.width() == 640) {
 		$topscreen.drawImage({
 			source: $topscreen.getCanvasImage(),
-			x: 400, y: 0
+			x: 320, y: 0
 		});
 	}
 
@@ -165,3 +172,4 @@ $("#settings input, #settings select").on('change', function() {
 window.onload = function() { $("#settings input").trigger('change'); (adsbygoogle = window.adsbygoogle || []).push({}); }
 $('input[name=boottool]', "#settings").keyup(function() { $("#settings input").trigger('change'); });
 $('input[name=auxtool]', "#settings").keyup(function() { $("#settings input").trigger('change'); });
+$('input[name=sd]', "#settings").keyup(function() { $("#settings input").trigger('change'); });
