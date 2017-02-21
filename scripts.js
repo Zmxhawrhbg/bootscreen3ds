@@ -13,7 +13,32 @@ function write(x, y, text, color = 'gray') {
 
 	$('canvas').drawText({
 		fillStyle: color,
-		x: x+1, y: y,
+		x: x+2, y: y,
+		fontSize: 13.5,
+		fontFamily: 'PerfectDOSVGA437Win',
+		align: 'left',
+		text: letter
+	});
+	
+	text = text.substr(1);
+	if (text != '')
+		write(x+6.75, y, text, color);
+}
+
+
+function writesmaller(x, y, text, color = 'gray') {
+	var letter = text.substr(0,1);
+	
+	if (letter == '_') {
+		text = text.substr(1);
+		letter = text.substr(0,1);
+		if (color == 'gray') color = 'white';
+		else if (color == 'white') color = 'gray';
+	}
+
+	$('canvas').drawText({
+		fillStyle: color,
+		x: x+2, y: y,
 		fontSize: 13,
 		fontFamily: 'PerfectDOSVGA437Win',
 		align: 'left',
@@ -22,13 +47,8 @@ function write(x, y, text, color = 'gray') {
 	
 	text = text.substr(1);
 	if (text != '')
-		write(x+6.5, y, text, color);
+		writesmaller(x+6.5, y, text, color);
 }
-
-$('canvas').drawImage({
-	source: 'images/symbols.png',
-	x: 0, y: 0,
-});
 
 $("#settings input, #settings select").on('change', function() {
 	var $topscreen = $('#topscreen');
@@ -56,7 +76,7 @@ $("#settings input, #settings select").on('change', function() {
 	if ($('select[name=sd] option:selected', "#settings").val() == 'custom') {
 		$('input[name=sd]', "#settings").show();
 		$('select[name=sd]', "#settings").hide();
-		use_auxinput = true;
+		use_sdinput = true;
 	}
 
 
@@ -145,7 +165,7 @@ $("#settings input, #settings select").on('change', function() {
 	var boot_bool = $('input[name=hold]', "#settings").is(':checked');
 	var boot_keys = $('select[name=onboot] option:selected', "#settings").val();
 	var boot_tool = $('input[name=boottool]', "#settings").val();
-	var boot_text = '_Hold ' + boot_keys + ' on boot_ to enter _' + boot_tool + '_.';
+	var boot_text = '_Hold ' + boot_keys + ' '+ $('select[name=firstTime] option:selected').text() +'_ to enter _' + boot_tool + '_.';
 
 	var aux_bool = $('input[name=secondLine]', "#settings").is(':checked');
 	var aux_keys = $('select[name=secondButton] option:selected').val();
@@ -153,12 +173,12 @@ $("#settings input, #settings select").on('change', function() {
 	var aux_text = '_Hold ' + aux_keys + ' '+ $('select[name=secondTime] option:selected').text() +'_ to enter _' + aux_tool + '_.';
 	
 	if (boot_bool && !aux_bool)
-		write(0, 16*14, boot_text);
+		writesmaller(0, 16*14, boot_text);
 	else if (boot_bool)
-		write(0, 16*13, boot_text);
+		writesmaller(0, 16*13, boot_text);
 	
 	if (aux_bool)
-		write(0, 16*14, aux_text);
+		writesmaller(0, 16*14, aux_text);
 
 	if ($topscreen.width() == 640) {
 		$topscreen.drawImage({
