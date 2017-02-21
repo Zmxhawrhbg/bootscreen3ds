@@ -48,7 +48,7 @@
 
 	<div class="container">
 		<h1>Old School PC BIOS</h1>
-		<span>Splash Bootscreen Generator <small>v5.0.3-javascript</small></span>
+		<span>Splash Bootscreen Generator <small>v5.0.3b-javascript</small></span>
 		<span class="credit">made with &#10084; by <a href="https://twitter.com/sebascontre">@sebascontre</a></span>
 
 		<form id="settings">
@@ -80,7 +80,8 @@
 			</fieldset>
 			<fieldset class="form-group col-2">
 				<label for="sd">SD Card</label>
-				<select name="sd" class="form-control">
+				<input type="text" name="sd" val="." style="display: none;" class="form-control form-control-sm select-inline" />
+				<select name="sd" class="form-control select-inline">
 					<option value="2G" selected="selected">2GB</option>
 					<option value="4G">4GB</option>
 					<option value="8G">8GB</option>
@@ -90,6 +91,7 @@
 					<option value="128G">128GB</option>
 					<option value="200G">200GB</option>
 					<option value="256G">256GB</option>
+					 <!--<option value="custom"><em>Custom</em></option>-->
 				</select>
 			</fieldset>
 			<fieldset class="form-group col-7">
@@ -133,7 +135,10 @@
                         <option value="RIGHT">RIGHT</option>
                         <option value="START">START</option>
                         <option value="SELECT" selected="selected">SELECT</option>
-                    </select> <strong>on boot</strong> to enter 
+                    </select></select> <select name="firstTime" class="form-control form-control-sm select-inline">
+                    	<option value="now">now</option>
+                    	<option value="boot" selected="selected">on boot</option>
+                    </select> to enter 
                     <input type="text" name="boottool" val="." style="display: none;" class="form-control form-control-sm select-inline" />
                     <select name="boottool" class="form-control form-control-sm select-inline">
                         <option value="lumasettings" selected="selected">Configuration Menu</option>
@@ -164,7 +169,7 @@
                     </select> <select name="secondTime" class="form-control form-control-sm select-inline">
                     	<option value="now">now</option>
                     	<option value="boot" selected="selected">on boot</option>
-                    </select> to enter to 
+                    </select> to enter  
                     <input type="text" name="secondTool" val="." style="display: none;" class="form-control form-control-sm select-inline" />
                     <select name="secondTool" class="form-control form-control-sm select-inline">
                         <option value="rxtools">Rxtools settings</option>
@@ -181,7 +186,7 @@
         </fieldset>
 		</form>
 	
-		<center><canvas width="400" height="240" id="topscreen"></canvas></center>
+		<center><canvas width="320" height="240" id="topscreen"></canvas></center>
 	</div>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
