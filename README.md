@@ -7,16 +7,12 @@ Now that's out of the way, this just fits the boot screen to fit on the bottom s
 
 How do I use this?
 
-1. Download this branch as zip
+1. Launch the [site](Zmxhawrhbg.github.io/bootscreen3ds)
 
-2. Run index.html
+2. Select everything according to how you like it
 
-3. Select everything according to how you like it
+3. Click download as bin
 
-4. Right click the image, select save as image.
+4. LUMA3DS: Rename the file to splashbottom.bin, put in the the SD:\Luma folder
 
-5. Use a .png to .bin converter
-
-6. LUMA3DS: Rename the file to splashbottom.bin, put in the the SD:\Luma folder
-
-7. LUMA3DS: Launch the config menu and turn splash screen on
+5. LUMA3DS: Launch the config menu and turn splash screen on
