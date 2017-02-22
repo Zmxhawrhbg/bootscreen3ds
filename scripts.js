@@ -1,9 +1,13 @@
 /* global $ */
 $.jCanvas.defaults.fromCenter = false;
 
-function write(x, y, text, color = 'gray') {
+/* jCanvas has an option for write full strings but don't have a option for control letter spacing.
+The font has a letter spacing of 2px, and the generator needs a spacing of 1px.
+This function allows to write character by character with only 1px of spacing. */
+var write = function(x, y, text, color = 'gray') {
 	var letter = text.substr(0,1);
 	
+	/* Search for specials characters */
 	if (letter == '_') {
 		text = text.substr(1);
 		letter = text.substr(0,1);
@@ -11,7 +15,8 @@ function write(x, y, text, color = 'gray') {
 		else if (color == 'white') color = 'gray';
 	}
 
-	$('canvas').drawText({
+	/* Draw 1 character */
+	$('#topscreen').drawText({
 		fillStyle: color,
 		x: x+2, y: y,
 		fontSize: 13.5,
@@ -20,15 +25,17 @@ function write(x, y, text, color = 'gray') {
 		text: letter
 	});
 	
+	/* Remove the character writed from the string, and if itn't empty, continue recursive */
 	text = text.substr(1);
 	if (text != '')
 		write(x+6.75, y, text, color);
 }
 
 
-function writesmaller(x, y, text, color = 'gray') {
+var writesmaller = function(x, y, text, color = 'gray') {
 	var letter = text.substr(0,1);
 	
+	/* Search for specials characters */
 	if (letter == '_') {
 		text = text.substr(1);
 		letter = text.substr(0,1);
@@ -36,7 +43,8 @@ function writesmaller(x, y, text, color = 'gray') {
 		else if (color == 'white') color = 'gray';
 	}
 
-	$('canvas').drawText({
+	/* Draw 1 character */
+	$('#topscreen').drawText({
 		fillStyle: color,
 		x: x+2, y: y,
 		fontSize: 13,
@@ -45,11 +53,25 @@ function writesmaller(x, y, text, color = 'gray') {
 		text: letter
 	});
 	
+	/* Remove the character writed from the string, and if itn't empty, continue recursive */
 	text = text.substr(1);
 	if (text != '')
 		writesmaller(x+6.5, y, text, color);
 }
 
+
+
+/* global $ */
+$.jCanvas.defaults.fromCenter = false;
+
+/* .getCanvasImage() don't work on Google Chrome if the page is served from a file URL (file://).
+This is a limitation of Google Chrome’s sandboxing architecture, and therefore cannot be fixed */ 
+if (window.location.protocol == 'file:' && window.navigator.vendor == "Google Inc.") {
+	$('#offline_warning').show();
+	$('select[name=type] option[value=menuhax]', "#settings").prop('disabled', true);
+}
+
+/* This draw the entire splash screen with any change on the form */
 $("#settings input, #settings select").on('change', function() {
 	var $topscreen = $('#topscreen');
 	
@@ -72,22 +94,19 @@ $("#settings input, #settings select").on('change', function() {
 		$('select[name=secondTool]', "#settings").hide();
 		use_auxinput = true;
 	}
-	
-	if ($('select[name=sd] option:selected', "#settings").val() == 'custom') {
-		$('input[name=sd]', "#settings").show();
-		$('select[name=sd]', "#settings").hide();
-		use_sdinput = true;
-	}
-
 
 	switch(type) {
 		case 'luma':
 			$topscreen.attr('width', 320);
 			line2 = 'Copyright(C) 2017, AuroraWright';
+			if ($('input[name=energyLuma]', "#settings").is(':disabled'))
+				$('input[name=energyLuma]', "#settings").prop('disabled', false);
 			break;
 		case 'menuhax':
 			$topscreen.attr('width', 640);
 			line2 = 'Copyright(C) 2015, yellow8';
+			if ($('input[name=energyLuma]', "#settings").is(':checked'))
+				$('input[name=energyLuma]', "#settings").prop('checked', false).prop('disabled', true);
 			break;
 	}
 
@@ -98,17 +117,34 @@ $("#settings input, #settings select").on('change', function() {
 		height: 240
 	}).drawImage({
 		source: 'images/symbols.png',
-		x: 0, y: 16,
+		x: 1, y: 16,
 		sWidth: 21,
 		sHeight: 29,
-		sx: 0, sy: 16
-	}).drawImage({
-		source: 'images/symbols.png',
-		x: 186, y: 16,
-		sWidth: 135,
-		sHeight: 84,
-		sx: 265, sy: 16
+		sx: 112, sy: 0
 	});
+	if (!$('input[name=energylogo]', "#settings").is(':checked')) {
+		if ($('input[name=energyLuma]', "#settings").is(':checked')) {
+			$topscreen.drawImage({
+				source: 'images/symbols.png',
+				x: 236, y: 16,
+				sWidth: 83,
+				sHeight: 54,
+				sx: 0, sy: 84
+			})
+		} else {
+			$topscreen.drawImage({
+				source: 'images/symbols.png',
+				x: 236, y: 16,
+				sWidth: 83,
+				sHeight: 53,
+				sx: 0, sy: 0
+			})/*.drawRect({
+			fillStyle: 'black',
+			x: 306, y: 26,
+			width: 21,
+			height: 29
+		});*/
+	}}
 
 	write(24, 16*1, line1);
 	write(24, 16*2, line2);
@@ -116,7 +152,7 @@ $("#settings input, #settings select").on('change', function() {
 	switch(model) {
 		case '3DS':
 			write(0, 16*5, 'Nintendo 3DS CTR-001('+region+')');
-			processor = 2; sd += ' SD'			
+			processor = 2; sd += ' SD'
 			break;
 		case '3DSXL':
 			if (region == 'JPN')
@@ -154,7 +190,7 @@ $("#settings input, #settings select").on('change', function() {
 	}
 
 	write(0, 16*9,  'Detecting Primary Master ... '+ processor/2 +'G Internal Memory');
-	write(0, 16*10, 'Detecting Primary Slave  ... '+sd+' Card');
+	write(0, 16*10, 'Detecting Primary Slave  ... '+ sd +' Card');
 	
 	if (!use_bootinput)
 		$('input[name=boottool]', "#settings").val($('select[name=boottool] option:selected', "#settings").text());
@@ -189,7 +225,58 @@ $("#settings input, #settings select").on('change', function() {
 
 });
 
-window.onload = function() { $("#settings input").trigger('change'); (adsbygoogle = window.adsbygoogle || []).push({}); }
+$(document).ready(function() {
+	
+	$('canvas').drawImage({
+		source: 'images/symbols.png',
+		x: 0, y: 0,
+		load: function() {
+			$("select[name=region]", "#settings").trigger('change');
+			if ($('#offline_warning').is(':hidden'))
+				$('#downloadPNG, #downloadBIN').removeClass('disabled');
+		}
+	});
+	
+});
+
 $('input[name=boottool]', "#settings").keyup(function() { $("#settings input").trigger('change'); });
 $('input[name=auxtool]', "#settings").keyup(function() { $("#settings input").trigger('change'); });
-$('input[name=sd]', "#settings").keyup(function() { $("#settings input").trigger('change'); });
+
+
+/* Create a PNG downloadable of the canvas */
+/* global download */
+$('#downloadPNG').click(function() {
+	if (!$(this).hasClass('disabled')) {
+		var filename = ($('#topscreen').width() == 320) ? 'splashbottom.png' : 'imagedisplay.png';
+		var filedata = $('#topscreen').getCanvasImage();
+		download(filedata, filename, "image/png");
+	}
+});
+
+$('#downloadBIN').click(function() {
+	if (!$(this).hasClass('disabled')) {
+		var filename = ($('#topscreen').width() == 320) ? 'splashbottom.bin' : 'menuhax_imagedisplay.bin';
+		
+		var width = $('#topscreen').height();
+		var height = $('#topscreen').width();
+		
+		var $canvas = $('<canvas/>').css({ position: 'absolute', top: 0, left: -1*width }).appendTo('body');
+		$canvas.attr('width', width).attr('height', height);
+
+		$canvas.drawImage({
+			source: $('#topscreen').getCanvasImage(),
+			x: width/2, y: height/2,
+			fromCenter: true,
+			rotate: 90
+		});
+
+		var canvasdata = $canvas.get(0).getContext('2d').getImageData(0, 0, width, height).data;
+		var filedata = '';
+		
+		for(var i = 0; i < canvasdata.length; i += 4)
+			filedata += String.fromCharCode(canvasdata[i+2], canvasdata[i+1], canvasdata[i]);
+
+		$canvas.remove();
+		download('data:application/octet-stream;base64,' + window.btoa(filedata), filename);
+	}
+});
