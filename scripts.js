@@ -1,6 +1,14 @@
 /* global $ */
 $.jCanvas.defaults.fromCenter = false;
 
+/* .getCanvasImage() don't work on Google Chrome if the page is served from a file URL (file://).
+This is a limitation of Google Chrome’s sandboxing architecture, and therefore cannot be fixed */ 
+if (window.location.protocol == 'file:' && window.navigator.vendor == "Google Inc.") {
+	$('#offline_warning').show();
+	$('select[name=type] option[value=menuhax2015]', "#settings").prop('disabled', true);
+	$('select[name=type] option[value=menuhax2016]', "#settings").prop('disabled', true);
+}
+
 /* jCanvas has an option for write full strings but don't have a option for control letter spacing.
 The font has a letter spacing of 2px, and the generator needs a spacing of 1px.
 This function allows to write character by character with only 1px of spacing. */
@@ -61,16 +69,6 @@ var writesmaller = function(x, y, text, color = 'gray') {
 
 
 
-/* global $ */
-$.jCanvas.defaults.fromCenter = false;
-
-/* .getCanvasImage() don't work on Google Chrome if the page is served from a file URL (file://).
-This is a limitation of Google Chrome’s sandboxing architecture, and therefore cannot be fixed */ 
-if (window.location.protocol == 'file:' && window.navigator.vendor == "Google Inc.") {
-	$('#offline_warning').show();
-	$('select[name=type] option[value=menuhax]', "#settings").prop('disabled', true);
-}
-
 /* This draw the entire splash screen with any change on the form */
 $("#settings input, #settings select").on('change', function() {
 	var $topscreen = $('#topscreen');
@@ -96,17 +94,21 @@ $("#settings input, #settings select").on('change', function() {
 	}
 
 	switch(type) {
-		case 'luma':
+		case 'luma2016':
+			$topscreen.attr('width', 320);
+			line2 = 'Copyright(C) 2016, AuroraWright';
+			break;
+		case 'luma2017':
 			$topscreen.attr('width', 320);
 			line2 = 'Copyright(C) 2017, AuroraWright';
-			if ($('input[name=energyLuma]', "#settings").is(':disabled'))
-				$('input[name=energyLuma]', "#settings").prop('disabled', false);
 			break;
-		case 'menuhax':
+		case 'menuhax2015':
 			$topscreen.attr('width', 640);
 			line2 = 'Copyright(C) 2015, yellow8';
-			if ($('input[name=energyLuma]', "#settings").is(':checked'))
-				$('input[name=energyLuma]', "#settings").prop('checked', false).prop('disabled', true);
+			break;
+		case 'menuhax2016':
+			$topscreen.attr('width', 640);
+			line2 = 'Copyright(C) 2016, yellow8';
 			break;
 	}
 
@@ -122,29 +124,45 @@ $("#settings input, #settings select").on('change', function() {
 		sHeight: 29,
 		sx: 112, sy: 0
 	});
-	if (!$('input[name=energylogo]', "#settings").is(':checked')) {
-		if ($('input[name=energyLuma]', "#settings").is(':checked')) {
+	
+	switch ($('select[name=logoOptions] option:selected', "#settings").val()) {
+		case 'energyStar':
 			$topscreen.drawImage({
 				source: 'images/symbols.png',
 				x: 236, y: 16,
 				sWidth: 83,
-				sHeight: 54,
-				sx: 0, sy: 84
-			})
-		} else {
-			$topscreen.drawImage({
-				source: 'images/symbols.png',
-				x: 236, y: 16,
-				sWidth: 83,
-				sHeight: 53,
+				sHeight: 52,
 				sx: 0, sy: 0
-			})/*.drawRect({
-			fillStyle: 'black',
-			x: 306, y: 26,
-			width: 21,
-			height: 29
-		});*/
-	}}
+			});
+			break;
+		case 'energyLuma':
+			$topscreen.drawImage({
+				source: 'images/symbols.png',
+				x: 236, y: 16,
+				sWidth: 82,
+				sHeight: 52,
+				sx: 0, sy: 52
+			});
+			break;
+		case 'lumaIcon':
+			$topscreen.drawImage({
+				source: 'images/symbols.png',
+				x: 256, y: 8,
+				sWidth: 53,
+				sHeight: 52,
+				sx: 0, sy: 104
+			});
+			break;
+			case 'nintendoIcon':
+			$topscreen.drawImage({
+				source: 'images/symbols.png',
+				x: 256, y: 5,
+				sWidth: 53,
+				sHeight: 32,
+				sx: 0, sy: 158
+			});
+			break;
+	}
 
 	write(24, 16*1, line1);
 	write(24, 16*2, line2);
@@ -216,10 +234,10 @@ $("#settings input, #settings select").on('change', function() {
 	if (aux_bool)
 		writesmaller(0, 16*14, aux_text);
 
-	if ($topscreen.width() == 640) {
+	if ($topscreen.width() == 800) {
 		$topscreen.drawImage({
 			source: $topscreen.getCanvasImage(),
-			x: 320, y: 0
+			x: 400, y: 0
 		});
 	}
 
@@ -247,7 +265,7 @@ $('input[name=auxtool]', "#settings").keyup(function() { $("#settings input").tr
 /* global download */
 $('#downloadPNG').click(function() {
 	if (!$(this).hasClass('disabled')) {
-		var filename = ($('#topscreen').width() == 320) ? 'splashbottom.png' : 'imagedisplay.png';
+		var filename = ($('#topscreen').width() == 400) ? 'splash.png' : 'imagedisplay.png';
 		var filedata = $('#topscreen').getCanvasImage();
 		download(filedata, filename, "image/png");
 	}
@@ -255,7 +273,7 @@ $('#downloadPNG').click(function() {
 
 $('#downloadBIN').click(function() {
 	if (!$(this).hasClass('disabled')) {
-		var filename = ($('#topscreen').width() == 320) ? 'splashbottom.bin' : 'menuhax_imagedisplay.bin';
+		var filename = ($('#topscreen').width() == 400) ? 'splash.bin' : 'menuhax_imagedisplay.bin';
 		
 		var width = $('#topscreen').height();
 		var height = $('#topscreen').width();
