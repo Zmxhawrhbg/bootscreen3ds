@@ -7,7 +7,7 @@ Now that's out of the way, this just fits the boot screen to fit on the bottom s
 
 How do I use this?
 
-1. Launch the [site](Zmxhawrhbg.github.io/bootscreen3ds)
+1. Launch the [site](https://Zmxhawrhbg.github.io/bootscreen3ds)
 
 2. Select everything according to how you like it
 
