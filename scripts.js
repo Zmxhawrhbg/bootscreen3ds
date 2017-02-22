@@ -265,7 +265,7 @@ $('input[name=auxtool]', "#settings").keyup(function() { $("#settings input").tr
 /* global download */
 $('#downloadPNG').click(function() {
 	if (!$(this).hasClass('disabled')) {
-		var filename = ($('#topscreen').width() == 320) ? 'splash.png' : 'imagedisplay.png';
+		var filename = ($('#topscreen').width() == 320) ? 'splashbottom.png' : 'imagedisplay.png';
 		var filedata = $('#topscreen').getCanvasImage();
 		download(filedata, filename, "image/png");
 	}
@@ -273,7 +273,7 @@ $('#downloadPNG').click(function() {
 
 $('#downloadBIN').click(function() {
 	if (!$(this).hasClass('disabled')) {
-		var filename = ($('#topscreen').width() == 320) ? 'splash.bin' : 'menuhax_imagedisplay.bin';
+		var filename = ($('#topscreen').width() == 320) ? 'splashbottom.bin' : 'menuhax_imagedisplay.bin';
 		
 		var width = $('#topscreen').height();
 		var height = $('#topscreen').width();
