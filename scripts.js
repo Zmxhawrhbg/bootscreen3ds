@@ -156,7 +156,7 @@ $("#settings input, #settings select").on('change', function() {
 			case 'nintendoIcon':
 			$topscreen.drawImage({
 				source: 'images/symbols.png',
-				x: 256, y: 5,
+				x: 256, y: -5,
 				sWidth: 53,
 				sHeight: 32,
 				sx: 0, sy: 158
