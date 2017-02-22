@@ -234,10 +234,10 @@ $("#settings input, #settings select").on('change', function() {
 	if (aux_bool)
 		writesmaller(0, 16*14, aux_text);
 
-	if ($topscreen.width() == 800) {
+	if ($topscreen.width() == 640) {
 		$topscreen.drawImage({
 			source: $topscreen.getCanvasImage(),
-			x: 400, y: 0
+			x: 320, y: 0
 		});
 	}
 
@@ -265,7 +265,7 @@ $('input[name=auxtool]', "#settings").keyup(function() { $("#settings input").tr
 /* global download */
 $('#downloadPNG').click(function() {
 	if (!$(this).hasClass('disabled')) {
-		var filename = ($('#topscreen').width() == 400) ? 'splash.png' : 'imagedisplay.png';
+		var filename = ($('#topscreen').width() == 320) ? 'splash.png' : 'imagedisplay.png';
 		var filedata = $('#topscreen').getCanvasImage();
 		download(filedata, filename, "image/png");
 	}
@@ -273,7 +273,7 @@ $('#downloadPNG').click(function() {
 
 $('#downloadBIN').click(function() {
 	if (!$(this).hasClass('disabled')) {
-		var filename = ($('#topscreen').width() == 400) ? 'splash.bin' : 'menuhax_imagedisplay.bin';
+		var filename = ($('#topscreen').width() == 320) ? 'splash.bin' : 'menuhax_imagedisplay.bin';
 		
 		var width = $('#topscreen').height();
 		var height = $('#topscreen').width();
