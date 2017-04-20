@@ -1,6 +1,8 @@
 # bootscreen3ds
 Old School BIOS Generator for MenuHax Nintendo 3DS
 
+# *Do not add to main branch, this is only for the bottom screen* 
+
 ## How do I use this?
 
 1. Load the [website](https://sebascontre.github.io/bootscreen3ds/).
@@ -25,6 +27,16 @@ Old School BIOS Generator for MenuHax Nintendo 3DS
 
 
 ## Changelog
+
+**Version 5.1.4**
+
+* Add Luma3DS 7.0.1 to the list
+* Add Luma3DS without version to the list
+* Add option for no SD/microSD Card
+
+**Version 5.1.3**
+
+* Added Compatibility with Luma3DS 7.0
 
 **Version 5.1.2**
 
