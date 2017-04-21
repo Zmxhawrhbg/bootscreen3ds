@@ -68,7 +68,6 @@ var writesmaller = function(x, y, text, color = 'gray') {
 }
 
 
-
 /* This draw the entire splash screen with any change on the form */
 $("#settings input, #settings select").on('change', function() {
 	var $topscreen = $('#topscreen');
@@ -243,7 +242,7 @@ $("#settings input, #settings select").on('change', function() {
 
 });
 
-$(document).ready(function() {
+window.onload = function() {
 	
 	$('canvas').drawImage({
 		source: 'images/symbols.png',
@@ -255,7 +254,7 @@ $(document).ready(function() {
 		}
 	});
 	
-});
+};
 
 $('input[name=boottool]', "#settings").keyup(function() { $("#settings input").trigger('change'); });
 $('input[name=auxtool]', "#settings").keyup(function() { $("#settings input").trigger('change'); });
