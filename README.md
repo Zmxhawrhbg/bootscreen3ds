@@ -1,7 +1,9 @@
-# bootscreen3ds
+# bootscreen3ds (Version 5.1.4)
 Old School BIOS Generator for MenuHax Nintendo 3DS
 
 # *Do not add to main branch, this is only for the bottom screen* 
+
+# I do not use pull requests, so the best way to see the version is at the top of the readme
 
 ## How do I use this?
 
