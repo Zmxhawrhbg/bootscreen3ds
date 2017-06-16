@@ -33,12 +33,14 @@ legend.col-form-legend {
 }
 
 #consoles .form-check-label input[type=radio] {
-    height: 100px;
+    height: 80px;
     vertical-align: middle;
 }
 
 #consoles .form-check-label img {
     vertical-align: middle;
+	height: 70px;
+	width: auto;
 }
 
 .form-control-sm {

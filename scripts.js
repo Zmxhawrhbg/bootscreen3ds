@@ -193,6 +193,13 @@ $("#settings input, #settings select").on('change', function() {
 				write(0, 16*5, 'New Nintendo 3DS XL RED-001('+region+')');
 			processor = 4; sd += ' microSD'
 			break;
+		case 'n2DSXL':
+			if (region == 'JPN')
+				write(0, 16*5, 'New Nintendo 2DS LL JAN-001('+region+')');
+			else
+				write(0, 16*5, 'New Nintendo 2DS XL JAN-001('+region+')');
+			processor = 4; sd += ' microSD'
+			break;
 	}
 
 	switch(processor) {
