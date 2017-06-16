@@ -1,9 +1,5 @@
-# bootscreen3ds (Version 5.1.9)
+# bootscreen3ds
 Old School BIOS Generator for MenuHax Nintendo 3DS
-
-# *Do not add to main branch, this is only for the bottom screen* 
-
-# I do not use pull requests, so the best way to see the version is at the top of the readme
 
 ## How do I use this?
 
@@ -30,20 +26,26 @@ Old School BIOS Generator for MenuHax Nintendo 3DS
 
 ## Changelog
 
-**Version 5.2.0**
-
-* Add New 2DS XL
-
 **Version 5.1.9**
 
-* Add Luma3DS 8.0
+* Add Luma3DS 8.0 to the list
 
-* Add Luma3DS 7.1
+**Version 5.1.8**
+
+* Add Luma3DS 7.1 to the list
 
 **Version 5.1.7**
 
-* Added versions up to Luma3DS 7.0.5
-* Remove advertising and add his donation link
+* Add Luma3DS 7.0.4 to the list
+* Remove advertising and add donations link.
+
+**Version 5.1.6**
+
+* Add Luma3DS 7.0.3 to the list
+
+**Version 5.1.5**
+
+* Add Luma3DS 7.0.2 to the list
 
 **Version 5.1.4**
 

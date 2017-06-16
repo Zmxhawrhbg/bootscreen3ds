@@ -27,7 +27,7 @@ var write = function(x, y, text, color = 'gray') {
 	$('#topscreen').drawText({
 		fillStyle: color,
 		x: x+2, y: y,
-		fontSize: 13.5,
+		fontSize: 16,
 		fontFamily: 'PerfectDOSVGA437Win',
 		align: 'left',
 		text: letter
@@ -36,37 +36,8 @@ var write = function(x, y, text, color = 'gray') {
 	/* Remove the character writed from the string, and if itn't empty, continue recursive */
 	text = text.substr(1);
 	if (text != '')
-		write(x+6.75, y, text, color);
+		write(x+8, y, text, color);
 }
-
-
-var writesmaller = function(x, y, text, color = 'gray') {
-	var letter = text.substr(0,1);
-	
-	/* Search for specials characters */
-	if (letter == '_') {
-		text = text.substr(1);
-		letter = text.substr(0,1);
-		if (color == 'gray') color = 'white';
-		else if (color == 'white') color = 'gray';
-	}
-
-	/* Draw 1 character */
-	$('#topscreen').drawText({
-		fillStyle: color,
-		x: x+2, y: y,
-		fontSize: 13,
-		fontFamily: 'PerfectDOSVGA437Win',
-		align: 'left',
-		text: letter
-	});
-	
-	/* Remove the character writed from the string, and if itn't empty, continue recursive */
-	text = text.substr(1);
-	if (text != '')
-		writesmaller(x+6.5, y, text, color);
-}
-
 
 /* This draw the entire splash screen with any change on the form */
 $("#settings input, #settings select").on('change', function() {
@@ -94,19 +65,19 @@ $("#settings input, #settings select").on('change', function() {
 
 	switch(type) {
 		case 'luma2016':
-			$topscreen.attr('width', 320);
+			$topscreen.attr('width', 400);
 			line2 = 'Copyright(C) 2016, AuroraWright';
 			break;
 		case 'luma2017':
-			$topscreen.attr('width', 320);
+			$topscreen.attr('width', 400);
 			line2 = 'Copyright(C) 2017, AuroraWright';
 			break;
 		case 'menuhax2015':
-			$topscreen.attr('width', 640);
+			$topscreen.attr('width', 800);
 			line2 = 'Copyright(C) 2015, yellow8';
 			break;
 		case 'menuhax2016':
-			$topscreen.attr('width', 640);
+			$topscreen.attr('width', 800);
 			line2 = 'Copyright(C) 2016, yellow8';
 			break;
 	}
@@ -114,51 +85,47 @@ $("#settings input, #settings select").on('change', function() {
 	$topscreen.clearCanvas().drawRect({
 		fillStyle: 'black',
 		x: 0, y: 0,
-		width: 320,
+		width: 400,
 		height: 240
 	}).drawImage({
 		source: 'images/symbols.png',
 		x: 1, y: 16,
 		sWidth: 21,
 		sHeight: 29,
-		sx: 112, sy: 0
+		sx: 40, sy: 10
 	});
 	
 	switch ($('select[name=logoOptions] option:selected', "#settings").val()) {
 		case 'energyStar':
 			$topscreen.drawImage({
 				source: 'images/symbols.png',
-				x: 236, y: 16,
-				sWidth: 83,
-				sHeight: 52,
+				x: 266, y: 16,
+				sWidth: 133,
+				sHeight: 84,
 				sx: 0, sy: 0
+			}).drawRect({
+				fillStyle: 'black',
+				x: 306, y: 26,
+				width: 21,
+				height: 29
 			});
 			break;
 		case 'energyLuma':
 			$topscreen.drawImage({
 				source: 'images/symbols.png',
-				x: 236, y: 16,
-				sWidth: 82,
-				sHeight: 52,
-				sx: 0, sy: 52
+				x: 266, y: 16,
+				sWidth: 133,
+				sHeight: 84,
+				sx: 0, sy: 84
 			});
 			break;
 		case 'lumaIcon':
 			$topscreen.drawImage({
 				source: 'images/symbols.png',
-				x: 256, y: 8,
-				sWidth: 53,
-				sHeight: 52,
-				sx: 0, sy: 104
-			});
-			break;
-			case 'nintendoIcon':
-			$topscreen.drawImage({
-				source: 'images/symbols.png',
-				x: 256, y: -5,
-				sWidth: 53,
-				sHeight: 32,
-				sx: 0, sy: 158
+				x: 266, y: 8,
+				sWidth: 133,
+				sHeight: 84,
+				sx: 0, sy: 84*2
 			});
 			break;
 	}
@@ -191,13 +158,6 @@ $("#settings input, #settings select").on('change', function() {
 				write(0, 16*5, 'New Nintendo 3DS LL RED-001('+region+')');
 			else
 				write(0, 16*5, 'New Nintendo 3DS XL RED-001('+region+')');
-			processor = 4; sd += ' microSD'
-			break;
-		case 'n2DSXL':
-			if (region == 'JPN')
-				write(0, 16*5, 'New Nintendo 2DS LL JAN-001('+region+')');
-			else
-				write(0, 16*5, 'New Nintendo 2DS XL JAN-001('+region+')');
 			processor = 4; sd += ' microSD'
 			break;
 	}
@@ -233,17 +193,17 @@ $("#settings input, #settings select").on('change', function() {
 	var aux_text = '_Hold ' + aux_keys + ' '+ $('select[name=secondTime] option:selected').text() +'_ to enter _' + aux_tool + '_.';
 	
 	if (boot_bool && !aux_bool)
-		writesmaller(0, 16*14, boot_text);
+		write(0, 16*14, boot_text);
 	else if (boot_bool)
-		writesmaller(0, 16*13, boot_text);
+		write(0, 16*13, boot_text);
 	
 	if (aux_bool)
-		writesmaller(0, 16*14, aux_text);
+		write(0, 16*14, aux_text);
 
-	if ($topscreen.width() == 640) {
+	if ($topscreen.width() == 800) {
 		$topscreen.drawImage({
 			source: $topscreen.getCanvasImage(),
-			x: 320, y: 0
+			x: 400, y: 0
 		});
 	}
 
@@ -271,7 +231,7 @@ $('input[name=auxtool]', "#settings").keyup(function() { $("#settings input").tr
 /* global download */
 $('#downloadPNG').click(function() {
 	if (!$(this).hasClass('disabled')) {
-		var filename = ($('#topscreen').width() == 320) ? 'splashbottom.png' : 'imagedisplay.png';
+		var filename = ($('#topscreen').width() == 400) ? 'splash.png' : 'imagedisplay.png';
 		var filedata = $('#topscreen').getCanvasImage();
 		download(filedata, filename, "image/png");
 	}
@@ -279,7 +239,7 @@ $('#downloadPNG').click(function() {
 
 $('#downloadBIN').click(function() {
 	if (!$(this).hasClass('disabled')) {
-		var filename = ($('#topscreen').width() == 320) ? 'splashbottom.bin' : 'menuhax_imagedisplay.bin';
+		var filename = ($('#topscreen').width() == 400) ? 'splash.bin' : 'menuhax_imagedisplay.bin';
 		
 		var width = $('#topscreen').height();
 		var height = $('#topscreen').width();
