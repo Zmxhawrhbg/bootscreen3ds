@@ -1,4 +1,4 @@
-# bootscreen3ds (Version 5.1.9)
+# bootscreen3ds (Version 6.0)
 Old School BIOS Generator for MenuHax Nintendo 3DS
 
 # *Do not add to main branch, this is only for the bottom screen* 
@@ -29,6 +29,10 @@ Old School BIOS Generator for MenuHax Nintendo 3DS
 
 
 ## Changelog
+
+**Version 6.0**
+
+* New CSS
 
 **Version 5.2.0**
 

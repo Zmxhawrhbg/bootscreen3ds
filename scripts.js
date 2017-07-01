@@ -12,85 +12,69 @@ if (window.location.protocol == 'file:' && window.navigator.vendor == "Google In
 /* jCanvas has an option for write full strings but don't have a option for control letter spacing.
 The font has a letter spacing of 2px, and the generator needs a spacing of 1px.
 This function allows to write character by character with only 1px of spacing. */
-var write = function(x, y, text, color = 'gray') {
-	var letter = text.substr(0,1);
+var write = function(x, y, text, color = 'gray', fntsize = 13.5) {
+	while (text != '') {
+		var letter = text.substr(0,1);
 	
-	/* Search for specials characters */
-	if (letter == '_') {
+		/* Search for specials characters */
+		if (letter == '_') {
+			text = text.substr(1);
+			letter = text.substr(0,1);
+			if (color == 'gray') color = 'white';
+			else if (color == 'white') color = 'gray';
+		}
+
+		/* Draw 1 character */
+		$('#topscreen').drawText({
+			fillStyle: color,
+			x: x+2, y: y,
+			fontSize: fntsize,
+			fontFamily: 'PerfectDOSVGA437Win',
+			align: 'left',
+			text: letter
+		});
+	
+		/* Remove the character writed from the string, and if itn't empty, continue recursive */
 		text = text.substr(1);
-		letter = text.substr(0,1);
-		if (color == 'gray') color = 'white';
-		else if (color == 'white') color = 'gray';
+		x = x + (fntsize/2);
 	}
-
-	/* Draw 1 character */
-	$('#topscreen').drawText({
-		fillStyle: color,
-		x: x+2, y: y,
-		fontSize: 13.5,
-		fontFamily: 'PerfectDOSVGA437Win',
-		align: 'left',
-		text: letter
-	});
-	
-	/* Remove the character writed from the string, and if itn't empty, continue recursive */
-	text = text.substr(1);
-	if (text != '')
-		write(x+6.75, y, text, color);
 }
-
-
-var writesmaller = function(x, y, text, color = 'gray') {
-	var letter = text.substr(0,1);
-	
-	/* Search for specials characters */
-	if (letter == '_') {
-		text = text.substr(1);
-		letter = text.substr(0,1);
-		if (color == 'gray') color = 'white';
-		else if (color == 'white') color = 'gray';
-	}
-
-	/* Draw 1 character */
-	$('#topscreen').drawText({
-		fillStyle: color,
-		x: x+2, y: y,
-		fontSize: 13,
-		fontFamily: 'PerfectDOSVGA437Win',
-		align: 'left',
-		text: letter
-	});
-	
-	/* Remove the character writed from the string, and if itn't empty, continue recursive */
-	text = text.substr(1);
-	if (text != '')
-		writesmaller(x+6.5, y, text, color);
-}
-
 
 /* This draw the entire splash screen with any change on the form */
 $("#settings input, #settings select").on('change', function() {
-	var $topscreen = $('#topscreen');
+	//var use_typeinput = false
 	
+	//if ($('select[name=type] option:selected', "#settings").val() == 'custom') {
+		//$('input[name=type]', "#settings").show();
+		//$('select[name=type]', "#settings").parent().hide();
+		//use_bootinput = true;
+	//}	
+	
+	var $topscreen = $('#topscreen');	
 	var model = $('input[name=model]:checked', "#settings").val();
 	var region = $('select[name=region] option:selected', "#settings").val();
 	var sd = $('select[name=sd] option:selected', "#settings").val();
+	
 	var type = $('select[name=type] option:selected', "#settings").val();
 	
 	var line1 = $('select[name=type] option:selected', "#settings").text();
+	//var line1 = $('select[name=type] option:selected', "#settings").text()
 	var line2 = ''; var processor = 0; var use_bootinput = false; var use_auxinput = false;
 
 	if ($('select[name=boottool] option:selected', "#settings").val() == 'custom') {
 		$('input[name=boottool]', "#settings").show();
-		$('select[name=boottool]', "#settings").hide();
+		$('select[name=boottool]', "#settings").parent().hide();
 		use_bootinput = true;
 	}
 	
 	if ($('select[name=secondTool] option:selected', "#settings").val() == 'custom') {
 		$('input[name=secondTool]', "#settings").show();
-		$('select[name=secondTool]', "#settings").hide();
+		$('select[name=secondTool]', "#settings").parent().hide();
 		use_auxinput = true;
 	}
+	
+	//if (!use_typeinput)
+	//	$('input[name=type]', "#settings").val($('select[name=type] option:selected', "#settings").text());
 
 	switch(type) {
 		case 'luma2016':
@@ -182,6 +166,13 @@ $("#settings input, #settings select").on('change', function() {
 			write(0, 16*5, 'Nintendo 2DS FTR-001('+region+')');
 			processor = 2; sd += ' SD'
 			break;
+		case 'n2DSXL':
+			if (region == 'JPN')
+				write(0, 16*5, 'New Nintendo 2DS LL JAN-001('+region+')');
+			else
+				write(0, 16*5, 'New Nintendo 2DS XL JAN-001('+region+')');
+			processor = 4; sd += ' SD'
+			break;
 		case 'n3DS':
 			write(0, 16*5, 'New Nintendo 3DS KTR-001('+region+')');
 			processor = 4; sd += ' microSD'
@@ -191,13 +182,6 @@ $("#settings input, #settings select").on('change', function() {
 				write(0, 16*5, 'New Nintendo 3DS LL RED-001('+region+')');
 			else
 				write(0, 16*5, 'New Nintendo 3DS XL RED-001('+region+')');
-			processor = 4; sd += ' microSD'
-			break;
-		case 'n2DSXL':
-			if (region == 'JPN')
-				write(0, 16*5, 'New Nintendo 2DS LL JAN-001('+region+')');
-			else
-				write(0, 16*5, 'New Nintendo 2DS XL JAN-001('+region+')');
 			processor = 4; sd += ' microSD'
 			break;
 	}
@@ -233,12 +217,12 @@ $("#settings input, #settings select").on('change', function() {
 	var aux_text = '_Hold ' + aux_keys + ' '+ $('select[name=secondTime] option:selected').text() +'_ to enter _' + aux_tool + '_.';
 	
 	if (boot_bool && !aux_bool)
-		writesmaller(0, 16*14, boot_text);
+		write(0, 16*14, boot_text, 'gray', 13);
 	else if (boot_bool)
-		writesmaller(0, 16*13, boot_text);
+		write(0, 16*13, boot_text, 'gray', 13);
 	
 	if (aux_bool)
-		writesmaller(0, 16*14, aux_text);
+		write(0, 16*14, aux_text, 'gray', 13);
 
 	if ($topscreen.width() == 640) {
 		$topscreen.drawImage({
@@ -271,7 +255,7 @@ $('input[name=auxtool]', "#settings").keyup(function() { $("#settings input").tr
 /* global download */
 $('#downloadPNG').click(function() {
 	if (!$(this).hasClass('disabled')) {
-		var filename = ($('#topscreen').width() == 320) ? 'splashbottom.png' : 'imagedisplay.png';
+		var filename = ($('#topscreen').width() == 320) ? 'splash.png' : 'imagedisplay.png';
 		var filedata = $('#topscreen').getCanvasImage();
 		download(filedata, filename, "image/png");
 	}
@@ -279,7 +263,7 @@ $('#downloadPNG').click(function() {
 
 $('#downloadBIN').click(function() {
 	if (!$(this).hasClass('disabled')) {
-		var filename = ($('#topscreen').width() == 320) ? 'splashbottom.bin' : 'menuhax_imagedisplay.bin';
+		var filename = ($('#topscreen').width() == 320) ? 'splash.bin' : 'menuhax_imagedisplay.bin';
 		
 		var width = $('#topscreen').height();
 		var height = $('#topscreen').width();
